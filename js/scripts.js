@@ -1,6 +1,6 @@
 document.getElementById('toggleFlashlight').addEventListener('click', function() {
     // Replace 'YOUR_WEBHOOK_URL' with your actual webhook URL
-    const webhookUrl = 'YOUR_WEBHOOK_URL';
+    const webhookUrl = 'https://trigger.macrodroid.com/28f44fb0-f273-4344-b602-48a91a3557f1/flashlight';
 
     fetch(webhookUrl, {
         method: 'POST',
