@@ -17,28 +17,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function updateStatus() {
-        fetch('https://timeapi.io/api/TimeZone/zone?timeZone=MDT')
-            .then(response => response.json())
-            .then(data => {
-                const now = new Date(data.currentLocalTime);
-                const day = now.getDay();
-                const hours = now.getHours();
-                const minutes = now.getMinutes();
+        fetch('https://cors-anywhere.herokuapp.com/https://timeapi.io/api/TimeZone/zone?timeZone=MDT', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const now = new Date(data.currentLocalTime);
+            const day = now.getDay();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
 
-                const isActiveTime = day >= 1 && day <= 5 && ((hours > 9 || (hours === 9 && minutes >= 20)) && (hours < 15 || (hours === 15 && minutes <= 30)));
+            const isActiveTime = day >= 1 && day <= 5 && ((hours > 9 || (hours === 9 && minutes >= 20)) && (hours < 15 || (hours === 15 && minutes <= 30)));
 
-                const statusElement = document.getElementById('status');
-                if (isActiveTime) {
-                    statusElement.textContent = 'Active (MDT)';
-                    statusElement.style.color = 'green';
-                } else {
-                    statusElement.textContent = 'Inactive (MDT)';
-                    statusElement.style.color = 'red';
-                }
-            })
-            .catch(error => {
-                console.error('There was a problem fetching the time:', error);
-            });
+            const statusElement = document.getElementById('status');
+            if (isActiveTime) {
+                statusElement.textContent = 'Active (MDT)';
+                statusElement.style.color = 'green';
+            } else {
+                statusElement.textContent = 'Inactive (MDT)';
+                statusElement.style.color = 'red';
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem fetching the time:', error);
+        });
     }
 
     // Update status immediately and then every minute
