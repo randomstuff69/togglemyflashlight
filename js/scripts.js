@@ -16,7 +16,7 @@ document.getElementById('toggleFlashlight').addEventListener('click', function()
     });
 });
 
-   function updateStatus() {
+function updateStatus() {
         fetch('https://timeapi.io/api/TimeZone/zone?timeZone=MDT')
             .then(response => response.json())
             .then(data => {
@@ -29,10 +29,10 @@ document.getElementById('toggleFlashlight').addEventListener('click', function()
 
                 const statusElement = document.getElementById('status');
                 if (isActiveTime) {
-                    statusElement.textContent = 'Active';
+                    statusElement.textContent = 'Active (MDT)';
                     statusElement.style.color = 'green';
                 } else {
-                    statusElement.textContent = 'Inactive';
+                    statusElement.textContent = 'Inactive (MDT)';
                     statusElement.style.color = 'red';
                 }
             })
@@ -41,5 +41,7 @@ document.getElementById('toggleFlashlight').addEventListener('click', function()
             });
     }
 
+    // Update status immediately and then every minute
     updateStatus();
+    setInterval(updateStatus, 60000); // 60000 milliseconds = 1 minute
 });
