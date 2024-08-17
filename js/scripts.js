@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const mdtMinutes = mdtTime.getUTCMinutes();
         const mdtDay = mdtTime.getUTCDay();
 
+        console.log(`MDT Time: ${mdtHours}:${mdtMinutes} Day: ${mdtDay}`);
+
         // Check if the current time is within the active period (8:20 AM to 3:30 PM Monday through Friday)
         const isActiveTime = mdtDay >= 1 && mdtDay <= 5 && 
                              ((mdtHours > 8 || (mdtHours === 8 && mdtMinutes >= 20)) && 
