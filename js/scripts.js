@@ -41,8 +41,4 @@ document.addEventListener('DOMContentLoaded', function() {
         statusElement.textContent = 'Inactive (MDT)';
         statusElement.style.color = 'red';
     }
-}
-
-// Update status immediately and then every minute
-updateStatus();
-setInterval(updateStatus, 60000); // 60000 milliseconds = 1 minute
+});
