@@ -17,36 +17,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function updateStatus() {
-        fetch('https://cors-anywhere.herokuapp.com/https://timeapi.io/api/TimeZone/zone?timeZone=MDT', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const now = new Date(data.currentLocalTime);
-            const day = now.getDay();
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
+    const now = new Date();
+    const day = now.getDay();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
 
-            const isActiveTime = day >= 1 && day <= 5 && ((hours > 9 || (hours === 9 && minutes >= 20)) && (hours < 15 || (hours === 15 && minutes <= 30)));
+    // Convert local time to MDT (Mountain Daylight Time)
+    const mdtOffset = -6 * 60; // MDT is UTC-6 hours
+    const localOffset = now.getTimezoneOffset();
+    const mdtTime = new Date(now.getTime() + (mdtOffset - localOffset) * 60 * 1000);
 
-            const statusElement = document.getElementById('status');
-            if (isActiveTime) {
-                statusElement.textContent = 'Active (MDT)';
-                statusElement.style.color = 'green';
-            } else {
-                statusElement.textContent = 'Inactive (MDT)';
-                statusElement.style.color = 'red';
-            }
-        })
-        .catch(error => {
-            console.error('There was a problem fetching the time:', error);
-        });
+    const mdtHours = mdtTime.getUTCHours();
+    const mdtMinutes = mdtTime.getUTCMinutes();
+    const mdtDay = mdtTime.getUTCDay();
+
+    const isActiveTime = mdtDay >= 1 && mdtDay <= 5 && ((mdtHours > 9 || (mdtHours === 9 && mdtMinutes >= 20)) && (mdtHours < 15 || (mdtHours === 15 && mdtMinutes <= 30)));
+
+    const statusElement = document.getElementById('status');
+    if (isActiveTime) {
+        statusElement.textContent = 'Active (MDT)';
+        statusElement.style.color = 'green';
+    } else {
+        statusElement.textContent = 'Inactive (MDT)';
+        statusElement.style.color = 'red';
     }
+}
 
-    // Update status immediately and then every minute
-    updateStatus();
-    setInterval(updateStatus, 60000); // 60000 milliseconds = 1 minute
-});
+// Update status immediately and then every minute
+updateStatus();
+setInterval(updateStatus, 60000); // 60000 milliseconds = 1 minute
