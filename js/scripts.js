@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const mdtMinutes = mdtTime.getUTCMinutes();
         const mdtDay = mdtTime.getUTCDay();
 
-        // Check if the current time is within the active period (9:20 AM to 3:30 PM Monday through Friday)
+        // Check if the current time is within the active period (8:20 AM to 3:30 PM Monday through Friday)
         const isActiveTime = mdtDay >= 1 && mdtDay <= 5 && 
-                             ((mdtHours > 9 || (mdtHours === 9 && mdtMinutes >= 20)) && 
+                             ((mdtHours > 8 || (mdtHours === 8 && mdtMinutes >= 20)) && 
                               (mdtHours < 15 || (mdtHours === 15 && mdtMinutes <= 30)));
 
         const statusElement = document.getElementById('status');
