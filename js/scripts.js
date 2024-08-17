@@ -16,35 +16,36 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-function updateStatus() {
-    const now = new Date();
+    function updateStatus() {
+        const now = new Date();
 
-    // Convert local time to MDT (Mountain Daylight Time)
-    const mdtOffset = -6 * 60; // MDT is UTC-6 hours
-    const localOffset = now.getTimezoneOffset();
-    const mdtTime = new Date(now.getTime() + (mdtOffset - localOffset) * 60 * 1000);
+        // Convert local time to MDT (Mountain Daylight Time)
+        const mdtOffset = -6 * 60; // MDT is UTC-6 hours
+        const localOffset = now.getTimezoneOffset();
+        const mdtTime = new Date(now.getTime() + (mdtOffset - localOffset) * 60 * 1000);
 
-    const mdtHours = mdtTime.getUTCHours();
-    const mdtMinutes = mdtTime.getUTCMinutes();
-    const mdtDay = mdtTime.getUTCDay();
+        const mdtHours = mdtTime.getUTCHours();
+        const mdtMinutes = mdtTime.getUTCMinutes();
+        const mdtDay = mdtTime.getUTCDay();
 
-    const isActiveTime = mdtDay >= 1 && mdtDay <= 5 && ((mdtHours > 9 || (mdtHours === 9 && mdtMinutes >= 20)) && (mdtHours < 15 || (mdtHours === 15 && mdtMinutes <= 30)));
+        const isActiveTime = mdtDay >= 1 && mdtDay <= 5 && ((mdtHours > 9 || (mdtHours === 9 && mdtMinutes >= 20)) && (mdtHours < 15 || (mdtHours === 15 && mdtMinutes <= 30)));
 
-    const statusElement = document.getElementById('status');
-    if (isActiveTime) {
-        statusElement.textContent = 'Active (MDT)';
-        statusElement.style.color = 'green';
-    } else {
-        statusElement.textContent = 'Inactive (MDT)';
-        statusElement.style.color = 'red';
+        const statusElement = document.getElementById('status');
+        if (isActiveTime) {
+            statusElement.textContent = 'Active (MDT)';
+            statusElement.style.color = 'green';
+        } else {
+            statusElement.textContent = 'Inactive (MDT)';
+            statusElement.style.color = 'red';
+        }
     }
-}
 
-// Function to continuously check and update the status
-function checkAndUpdateStatus() {
-    updateStatus();
-    setTimeout(checkAndUpdateStatus, 1000); // Check every second
-}
+    // Function to continuously check and update the status
+    function checkAndUpdateStatus() {
+        updateStatus();
+        setTimeout(checkAndUpdateStatus, 1000); // Check every second
+    }
 
-// Start the continuous check
-checkAndUpdateStatus();
+    // Start the continuous check
+    checkAndUpdateStatus();
+});
