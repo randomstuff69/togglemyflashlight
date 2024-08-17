@@ -16,11 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    function updateStatus() {
+function updateStatus() {
     const now = new Date();
-    const day = now.getDay();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
 
     // Convert local time to MDT (Mountain Daylight Time)
     const mdtOffset = -6 * 60; // MDT is UTC-6 hours
@@ -41,4 +38,13 @@ document.addEventListener('DOMContentLoaded', function() {
         statusElement.textContent = 'Inactive (MDT)';
         statusElement.style.color = 'red';
     }
-});
+}
+
+// Function to continuously check and update the status
+function checkAndUpdateStatus() {
+    updateStatus();
+    setTimeout(checkAndUpdateStatus, 1000); // Check every second
+}
+
+// Start the continuous check
+checkAndUpdateStatus();
