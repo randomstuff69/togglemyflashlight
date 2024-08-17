@@ -17,10 +17,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function updateStatus() {
-        const now = new Date();
+        const now = new Date(); // Get the current date and time
+
+        // Check if the current time is in DST (second Sunday in March to first Sunday in November)
+        const isDST = now.getTimezoneOffset() < new Date(now.getFullYear(), 0, 1).getTimezoneOffset();
 
         // Convert local time to MDT (Mountain Daylight Time)
-        const mdtOffset = -6 * 60; // MDT is UTC-6 hours
+        const mdtOffset = isDST ? -6 * 60 : -7 * 60; // MDT is UTC-6 during DST, UTC-7 otherwise
         const localOffset = now.getTimezoneOffset();
         const mdtTime = new Date(now.getTime() + (mdtOffset - localOffset) * 60 * 1000);
 
