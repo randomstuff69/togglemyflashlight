@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const webhookUrl = 'https://trigger.macrodroid.com/28f44fb0-f273-4344-b602-48a91a3557f1/flashlight';
+    const webhookUrl = 'https://trigger.macrodroid.com/28f44fb0-f273-4344-b602-48a91a3557f1/wirelessdebug';
 
     document.getElementById('toggleFlashlight').addEventListener('click', function() {
         fetch(`${webhookUrl}?param1=value1&param2=value2`, {
@@ -15,45 +15,3 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('There was a problem with the webhook request:', error);
         });
     });
-
-    function updateStatus() {
-        const now = new Date(); // Get the current date and time
-
-        // Check if the current time is in DST (second Sunday in March to first Sunday in November)
-        const isDST = now.getTimezoneOffset() < new Date(now.getFullYear(), 0, 1).getTimezoneOffset();
-
-        // Convert local time to MDT (Mountain Daylight Time)
-        const mdtOffset = isDST ? -6 * 60 : -7 * 60; // MDT is UTC-6 during DST, UTC-7 otherwise
-        const localOffset = now.getTimezoneOffset();
-        const mdtTime = new Date(now.getTime() + (mdtOffset - localOffset) * 60 * 1000);
-
-        const mdtHours = mdtTime.getUTCHours();
-        const mdtMinutes = mdtTime.getUTCMinutes();
-        const mdtDay = mdtTime.getUTCDay();
-
-        console.log(`MDT Time: ${mdtHours}:${mdtMinutes} Day: ${mdtDay}`);
-
-        // Check if the current time is within the active period (8:20 AM to 3:30 PM Monday through Friday)
-        const isActiveTime = mdtDay >= 1 && mdtDay <= 5 && 
-                             ((mdtHours > 8 || (mdtHours === 8 && mdtMinutes >= 20)) && 
-                              (mdtHours < 15 || (mdtHours === 15 && mdtMinutes <= 30)));
-
-        const statusElement = document.getElementById('status');
-        if (isActiveTime) {
-            statusElement.textContent = 'Active (MDT)';
-            statusElement.style.color = 'green';
-        } else {
-            statusElement.textContent = 'Inactive (MDT)';
-            statusElement.style.color = 'red';
-        }
-    }
-
-    // Function to continuously check and update the status
-    function checkAndUpdateStatus() {
-        updateStatus();
-        setTimeout(checkAndUpdateStatus, 1000); // Check every second
-    }
-
-    // Start the continuous check
-    checkAndUpdateStatus();
-});
